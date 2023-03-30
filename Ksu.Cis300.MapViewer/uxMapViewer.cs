@@ -1,4 +1,7 @@
-﻿using Ksu.Cis300.ImmutableBinaryTrees;
+﻿/* uxMapViewer.cs
+ * Made By: Max Shafer
+ */
+using Ksu.Cis300.ImmutableBinaryTrees;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,19 +15,39 @@ using System.Windows.Forms;
 
 namespace Ksu.Cis300.MapViewer
 {
+    /// <summary>
+    /// A class for the Map Veiwer
+    /// </summary>
     public partial class uxMapViewer : Form
     {
+        /// <summary>
+        /// A int to keep track of max zoom
+        /// </summary>
         private int _maxZoom;
+
+        /// <summary>
+        /// constrictor for the map view
+        /// </summary>
         public uxMapViewer()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// IGNORE*********
+        /// </summary>
+        /// <param name="sender">ignore</param>
+        /// <param name="e">ignore</param>
         private void uxMapViewer_Load(object sender, EventArgs e)
         {
-
+            //ignore!
         }
 
+        /// <summary>
+        /// An even handler to open file
+        /// </summary>
+        /// <param name="sender">sender</param>
+        /// <param name="e">e</param>
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -62,11 +85,21 @@ namespace Ksu.Cis300.MapViewer
 
         }
 
+        /// <summary>
+        /// ************IGNORE
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxMap_Load(object sender, EventArgs e)
         {
-
+            ///   IGNORE
         }
 
+        /// <summary>
+        /// Zoom in event hadler
+        /// </summary>
+        /// <param name="sender">sendeer</param>
+        /// <param name="e"> the E</param>
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
            Point point = uxFlowLayoutPanel.AutoScrollPosition;
@@ -100,6 +133,11 @@ namespace Ksu.Cis300.MapViewer
             }
         }
 
+        /// <summary>
+        /// A event handler for the zoom out 
+        /// </summary>
+        /// <param name="sender">sender</param>
+        /// <param name="e"> The E</param>
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Point point = uxFlowLayoutPanel.AutoScrollPosition;

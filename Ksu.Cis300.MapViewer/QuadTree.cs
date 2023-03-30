@@ -1,4 +1,7 @@
-﻿using KansasStateUniversity.TreeViewer2;
+﻿/* QuadTree.cs
+ * Made By: Max Shafer
+ */
+using KansasStateUniversity.TreeViewer2;
 using Ksu.Cis300.ImmutableBinaryTrees;
 using System;
 using System.Collections.Generic;
@@ -21,7 +24,7 @@ namespace Ksu.Cis300.MapViewer
         /// Thus, if the bounding rectangle of a splitting node has an area less than this value, 
         /// its children will be at the next higher zoom level.
         /// </summary>
-        private const int _ZoomIncrease = 100;
+        private const int _zoomIncrease = 100;
 
         /// <summary>
         /// the field index of the width of the map bounds (0). 
@@ -93,7 +96,7 @@ namespace Ksu.Cis300.MapViewer
         /// <param name="zoom">An int giving the zoom level for the root node;</param>
         /// <param name="isQuadTree">A bool indicating whether the root is a quad tree node;</param>
         /// <param name="maxZoom">An out int giving the maximum zoom level in the tree.</param>
-        /// <returns></returns>
+        /// <returns> Binanry tree containing the data</returns>
         private static BinaryTreeNode<MapData> BuildTree(List<LineSegment> list, RectangleF recF, int zoom, bool isQuadTree, out int maxZoom)
         {
            
@@ -116,7 +119,7 @@ namespace Ksu.Cis300.MapViewer
                 List<LineSegment> leftList = new List<LineSegment>();
                 List<LineSegment> rightList = new List<LineSegment>();
 
-                if (isQuadTree || ((recF.Width * recF.Height) < _ZoomIncrease))
+                if (isQuadTree || ((recF.Width * recF.Height) < _zoomIncrease))
                 {
                     zoomOfChildren = zoom + 1;
                 }
@@ -138,8 +141,8 @@ namespace Ksu.Cis300.MapViewer
                     //For a quad tree node, these rectangles should be formed by splitting the bounds of the root
                     //node at the vertical line whose x-coordinate is the above value.
 
-                    topLeftBounds = new RectangleF(recF.Left, recF.Top, recF.Width * (float).5, recF.Height);
-                    bottomRightBounds = new RectangleF(whereToSplit, recF.Top, recF.Width * (float).5, recF.Height);
+                    topLeftBounds = new RectangleF(recF.Left, recF.Top,whereToSplit, recF.Height);
+                    bottomRightBounds = new RectangleF(whereToSplit, recF.Top, whereToSplit, recF.Height);
 
                     //***** NOT IN DOC ******
                     isQuadTree = false;
@@ -158,8 +161,8 @@ namespace Ksu.Cis300.MapViewer
                     //root node at the horizontal line whose y-coordinate is the above value.
                     //
 
-                    topLeftBounds = new RectangleF(recF.Left, recF.Top, recF.Width, recF.Height * (float).5);
-                    bottomRightBounds = new RectangleF(recF.Left, whereToSplit, recF.Width, recF.Height * (float).5);
+                    topLeftBounds = new RectangleF(recF.Left, recF.Top, recF.Width, whereToSplit);
+                    bottomRightBounds = new RectangleF(recF.Left, whereToSplit, recF.Width, whereToSplit);
                     //***** NOT IN DOC ******
                     isQuadTree = true;
                 }
@@ -214,7 +217,7 @@ namespace Ksu.Cis300.MapViewer
                 if (lineSegment.MinZoom <= zoom)
                 {
                     //add this LineSegment to the list of line segments in the MapData.
-                    mapData.Lines.Add(lineSegment);
+                    mapData.Lines.Add(lineSegment.Reflection());
                 }
                 //Otherwise,if the x-coordinate of the ending point of the LineSegment is
                 //no more than the value at which the rectangular bounds are split
@@ -222,7 +225,7 @@ namespace Ksu.Cis300.MapViewer
                 {
                     //add the reflection of this LineSegment to the list for the left child
                     //mapData.Lines.Add(lineSegment);
-                    leftList.Add(lineSegment);
+                    leftList.Add(lineSegment.Reflection());
                 }
                 //Otherwise, if the x-coordinate of the starting point of the LineSegment
                 //is at least the value at which the rectangular bounds are split,
@@ -230,7 +233,7 @@ namespace Ksu.Cis300.MapViewer
                 {
                     //add the reflection of this LineSegment to the list for the right child
                     //mapData.Lines.Add(lineSegment);
-                    rightList.Add(lineSegment);
+                    rightList.Add(lineSegment.Reflection());
                 }
                 else
                 {
@@ -242,8 +245,8 @@ namespace Ksu.Cis300.MapViewer
                     lineSegment.SplitLine(whereToSplit, out leftSide, out rightSide);
 
                     //and add the reflections of the resulting LineSegments to the lists for the appropriate children.
-                    leftList.Add(leftSide);
-                    rightList.Add(rightSide);
+                    leftList.Add(leftSide.Reflection());
+                    rightList.Add(rightSide.Reflection());
                 }
 
             }
@@ -260,8 +263,8 @@ namespace Ksu.Cis300.MapViewer
         /// </summary>
         /// <param name="fileName">the name of the file to be read</param>
         /// <param name="maxZoom">an out int the max zoom</param>
-        /// <returns></returns>
-        /// <exception cref="IOException"></exception>
+        /// <returns>A Bianary tree</returns>
+        /// <exception cref="IOException">When somtginh goes wrong</exception>
         public static BinaryTreeNode<MapData> ReadFile(string fileName, out int maxZoom)
         {
             using (StreamReader file = new StreamReader(fileName))
@@ -429,7 +432,7 @@ namespace Ksu.Cis300.MapViewer
                 //You will first need to see if the ClipBounds intersects the scaled rectangle by using
                 //one of these RectangleFs' IntersectsWith methods. You should only proceed if they intersect
                 //and the zoom level in the tree is no more than the zoom level parameter - otherwise, there is nothing to draw.
-                if (binaryTreeNode.Data.Zoom <= zoomDisplayed)
+                if (newBounds.IntersectsWith(g.ClipBounds) && binaryTreeNode.Data.Zoom <= zoomDisplayed)
                 {
                     foreach(LineSegment line in binaryTreeNode.Data.Lines)
                     {

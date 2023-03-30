@@ -1,4 +1,8 @@
-﻿using System;
+﻿/* MapData.cs
+ * Made By: Max Shafer
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

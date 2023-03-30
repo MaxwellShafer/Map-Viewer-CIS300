@@ -1,4 +1,7 @@
-﻿using KansasStateUniversity.TreeViewer2;
+﻿/* Map.cs
+ * Made By: Max Shafer
+ */
+using KansasStateUniversity.TreeViewer2;
 using Ksu.Cis300.ImmutableBinaryTrees;
 using System;
 using System.Collections.Generic;
@@ -44,6 +47,9 @@ namespace Ksu.Cis300.MapViewer
 
         private BinaryTreeNode<MapData> _binaryTree;
 
+        /// <summary>
+        /// A zoom level that also does other things
+        /// </summary>
         public int ZoomLevel
         {
             get { return _currentZoomLevel; }
@@ -95,6 +101,9 @@ namespace Ksu.Cis300.MapViewer
             }
         }
 
+        /// <summary>
+        /// A constructor for the map
+        /// </summary>
         public Map()
         {
             InitializeComponent();
@@ -104,6 +113,10 @@ namespace Ksu.Cis300.MapViewer
             ZoomLevel = 1;
         }
 
+        /// <summary>
+        /// Overides the Onpaing Method
+        /// </summary>
+        /// <param name="e">the graphic</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -122,6 +135,11 @@ namespace Ksu.Cis300.MapViewer
 
         }
 
+        /// <summary>
+        /// I************** Ignore this was a missclick **********
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Map_Load(object sender, EventArgs e)
         {
 
